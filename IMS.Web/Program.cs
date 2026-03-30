@@ -1,10 +1,14 @@
+using IMS.Application.Interfaces;
+using IMS.InMemory;
 using IMS.Web.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddRazorComponents()
-    .AddInteractiveServerComponents();
+builder.Services.AddRazorComponents();
+
+// DIs
+builder.Services.AddSingleton<IInventoryRepository, InventoryRepository>();
 
 var app = builder.Build();
 
@@ -21,7 +25,6 @@ app.UseHttpsRedirection();
 app.UseAntiforgery();
 
 app.MapStaticAssets();
-app.MapRazorComponents<App>()
-    .AddInteractiveServerRenderMode();
+app.MapRazorComponents<App>();
 
 app.Run();
