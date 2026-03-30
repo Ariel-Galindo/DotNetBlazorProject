@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="IMS.Application/IMS.Application.csproj" />
+  <Project Path="IMS.Domain/IMS.Domain.csproj" />
+  <Project Path="IMS.Persistence/IMS.Persistence.csproj" />
+  <Project Path="IMS.Web/IMS.Web.csproj" />
+</Solution>
