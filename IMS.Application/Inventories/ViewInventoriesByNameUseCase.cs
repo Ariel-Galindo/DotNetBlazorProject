@@ -4,16 +4,11 @@ using IMS.Domain;
 
 namespace IMS.Application.Inventories;
 
-public class ViewInventoriesByNameUseCase
+public class ViewInventoriesByNameUseCase(IInventoryRepository inventoryRepository) : IViewInventoriesByNameUseCase
 {
-    private readonly IInventoryRepository inventoryRepository;
+    private readonly IInventoryRepository inventoryRepository = inventoryRepository;
 
-    public ViewInventoriesByNameUseCase(IInventoryRepository inventoryRepository)
-    {
-        this.inventoryRepository = inventoryRepository;
-    }
-
-    public async Task<IEnumerable<Inventory>> ExecuteAsync(string name)
+    public async Task<IEnumerable<Inventory>> ExecuteAsync(string name = "")
     {
         return await inventoryRepository.GetInventoriesByNameAsync(name);
     }

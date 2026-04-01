@@ -1,4 +1,5 @@
 using IMS.Application.Interfaces;
+using IMS.Application.Inventories;
 using IMS.InMemory;
 using IMS.Web.Components;
 
@@ -9,6 +10,7 @@ builder.Services.AddRazorComponents();
 
 // DIs
 builder.Services.AddSingleton<IInventoryRepository, InventoryRepository>();
+builder.Services.AddTransient<IViewInventoriesByNameUseCase, ViewInventoriesByNameUseCase>();
 
 var app = builder.Build();
 
