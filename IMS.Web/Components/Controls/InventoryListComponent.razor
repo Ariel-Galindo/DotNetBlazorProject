@@ -1,0 +1,18 @@
+﻿@inject IViewInventoriesByNameUseCase ViewInventoriesByNameUseCase
+
+@if (inventories is not null && inventories.Any()) {
+    foreach (var inv in inventories) {
+        <li>@inv.InventoryName</li>
+        <li>@inv.Quantity</li>
+        <li>@inv.Price</li>
+    }
+}
+
+@code {
+    private List<Inventory>? inventories;
+
+    protected override async Task OnInitializedAsync()
+    {
+        inventories = (await ViewInventoriesByNameUseCase.ExecuteAsync()).ToList();
+    }
+}

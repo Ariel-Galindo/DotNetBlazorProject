@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Components\Controls\" />
     <Folder Include="Components\Pages\Inventories\" />
   </ItemGroup>
 
