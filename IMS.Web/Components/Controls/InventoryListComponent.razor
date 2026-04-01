@@ -1,12 +1,28 @@
 ﻿@inject IViewInventoriesByNameUseCase ViewInventoriesByNameUseCase
 
-@if (inventories is not null && inventories.Any()) {
-    foreach (var inv in inventories) {
-        <li>@inv.InventoryName</li>
-        <li>@inv.Quantity</li>
-        <li>@inv.Price</li>
-    }
-}
+<table class="min-w-full border border-gray-200">
+    <thead class="bg-gray-200">
+        <tr>
+            <th class="text-left px-4 py-2">Name</th>
+            <th class="text-left px-4 py-2">Quantity</th>
+            <th class="text-left px-4 py-2">Price</th>
+            <th class="text-left px-4 py-2"></th>
+        </tr>
+    </thead>
+    <tbody id="tableBody">
+        @if (inventories is not null && inventories.Any())
+        {
+            foreach (var inv in inventories)
+            {
+                <tr>
+                    <td>@inv.InventoryName</td>
+                    <td>@inv.Quantity</td>
+                    <td>@inv.Price.ToString("c")</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
 
 @code {
     private List<Inventory>? inventories;
