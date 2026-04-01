@@ -6,7 +6,7 @@
 <br>
 <br>
 
-@if (inventories is not null && inventories.Count > 0) {
+@if (inventories is not null && inventories.Any()) {
     foreach (var inv in inventories) {
         <li>@inv.InventoryName</li>
         <li>@inv.Quantity</li>

@@ -12,4 +12,8 @@
     <ProjectReference Include="..\IMS.InMemory\IMS.InMemory.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Components\Pages\Inventories\" />
+  </ItemGroup>
+
 </Project>
