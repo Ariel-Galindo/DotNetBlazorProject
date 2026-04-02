@@ -1,6 +1,7 @@
 ﻿@page "/add-inventory"
 
 @inject IAddInventoryUseCase AddInventoryUseCase
+@inject NavigationManager NavigationManager
 
 <h3>AddInventory</h3>
 <br>
@@ -8,32 +9,34 @@
 <EditForm Model="inventory" FormName="formInventory" OnValidSubmit="Save">
     <DataAnnotationsValidator />
 
-    <div class="form-group">
+    <div class="form-group mb-3">
         <label for="">Name</label>
         <InputText id="name" @bind-Value="inventory.InventoryName" class="form-control" />
         <ValidationMessage For="() => inventory.InventoryName" />
     </div>
-    <div class="form-group">
+    <div class="form-group mb-3">
         <label for="">Quantity</label>
-        <InputNumber id="name" @bind-Value="inventory.Quantity" class="form-control" />
+        <InputNumber id="quantity" @bind-Value="inventory.Quantity" class="form-control" />
         <ValidationMessage For="() => inventory.Quantity" />
     </div>
-    <div class="form-group">
+    <div class="form-group mb-3">
         <label for="">Price</label>
-        <InputNumber id="name" @bind-Value="inventory.Price" class="form-control" />
+        <InputNumber id="price" @bind-Value="inventory.Price" class="form-control" />
         <ValidationMessage For="() => inventory.Price" />
     </div>
-    <br>
+    <a href="/inventory" class="btn btn-light">Cancel</a>
     <button type="submit" class="btn btn-primary">Submit</button>
 </EditForm>
 
 @code {
 
-    [SupplyParameterFromForm]
-    private Inventory inventory { get; set; } = new Inventory();
+    private Inventory inventory = new();
 
     private async Task Save()
     {
         await AddInventoryUseCase.ExecuteAsync(inventory);
+
+        NavigationManager.NavigateTo("/inventory");
     }
+
 }
