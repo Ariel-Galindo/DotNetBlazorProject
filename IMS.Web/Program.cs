@@ -1,4 +1,4 @@
-using IMS.Application.Interfaces;
+using IMS.Application.Inventories.Interfaces;
 using IMS.Application.Inventories;
 using IMS.InMemory;
 using IMS.Web.Components;

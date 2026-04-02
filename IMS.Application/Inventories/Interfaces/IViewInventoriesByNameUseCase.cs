@@ -1,7 +1,7 @@
 using System;
 using IMS.Domain;
 
-namespace IMS.Application.Interfaces;
+namespace IMS.Application.Inventories.Interfaces;
 
 public interface IViewInventoriesByNameUseCase
 {

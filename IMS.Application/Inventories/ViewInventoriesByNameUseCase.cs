@@ -1,5 +1,5 @@
 using System;
-using IMS.Application.Interfaces;
+using IMS.Application.Inventories.Interfaces;
 using IMS.Domain;
 
 namespace IMS.Application.Inventories;
