@@ -1,0 +1,34 @@
+﻿@page "/add-inventory"
+
+@inject IAddInventoryUseCase AddInventoryUseCase
+
+<h3>AddInventory</h3>
+<br>
+
+<EditForm Model="inventory" FormName="formInventory" OnValidSubmit="Save">
+    <div class="form-group">
+        <label for="">Name</label>
+        <InputText id="name" @bind-Value="inventory.InventoryName" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label for="">Quantity</label>
+        <InputNumber id="name" @bind-Value="inventory.Quantity" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label for="">Price</label>
+        <InputNumber id="name" @bind-Value="inventory.Price" class="form-control" />
+    </div>
+    <br>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</EditForm>
+
+@code {
+
+    [SupplyParameterFromForm]
+    private Inventory inventory { get; set; } = new Inventory();
+
+    private async Task Save()
+    {
+        await AddInventoryUseCase.ExecuteAsync(inventory);
+    }
+}
