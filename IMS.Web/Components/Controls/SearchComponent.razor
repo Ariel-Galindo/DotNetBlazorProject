@@ -14,7 +14,7 @@
 @code {
 
     [SupplyParameterFromForm]
-    private string? searchFilter { get; set; } = string.Empty;
+    private string? searchFilter { get; set; }
 
     [Parameter]
     public EventCallback<string> OnSearch { get; set; }

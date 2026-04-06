@@ -11,7 +11,7 @@
 
     <div class="form-group mb-3">
         <label for="">Name</label>
-        <InputText id="name" @bind-Value="inventory!.InventoryName" class="form-control" />
+        <InputText id="name" @bind-Value="inventory.InventoryName" class="form-control" />
         <ValidationMessage For="() => inventory.InventoryName" />
     </div>
     <div class="form-group mb-3">
@@ -29,18 +29,13 @@
 </EditForm>
 
 @code {
+
     [SupplyParameterFromForm]
-    private Inventory? inventory { get; set; } = new();
+    private Inventory inventory { get; set; } = new Inventory();
 
     private async Task Save()
     {
-        if (inventory is not null)
-        {
-            await AddInventoryUseCase.ExecuteAsync(inventory);
-            NavigationManager.NavigateTo("/inventory");
-        }
-
-        NavigationManager.NotFound();
+        await AddInventoryUseCase.ExecuteAsync(inventory);
+        NavigationManager.NavigateTo("/inventory");
     }
-
 }
