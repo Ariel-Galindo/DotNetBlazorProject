@@ -20,12 +20,12 @@ public class InventoryRepository : IInventoryRepository
     {
         if (_inventories.Any(x => x.InventoryName.Equals(inventory.InventoryName, StringComparison.OrdinalIgnoreCase))) return Task.CompletedTask;
 
-            var maxId = _inventories.Max(x => x.InventoryID);
-            inventory.InventoryID = maxId + 1;
+        var maxId = _inventories.Max(x => x.InventoryID);
+        inventory.InventoryID = maxId + 1;
 
-            _inventories.Add(inventory);
+        _inventories.Add(inventory);
 
-            return Task.CompletedTask;
+        return Task.CompletedTask;
     }
 
     public async Task<IEnumerable<Inventory>> GetInventoriesByNameAsync(string name)
@@ -33,5 +33,22 @@ public class InventoryRepository : IInventoryRepository
         if (string.IsNullOrWhiteSpace(name)) return await Task.FromResult(_inventories);
 
         return _inventories.Where(x => x.InventoryName.Contains(name, StringComparison.CurrentCultureIgnoreCase));
+    }
+
+    public Task UpdateInventoryAsync(Inventory inventory)
+    {
+        if (_inventories.Any(x => x.InventoryID != inventory.InventoryID &&
+        x.InventoryName.Equals(inventory.InventoryName, StringComparison.OrdinalIgnoreCase)))
+            return Task.CompletedTask;
+
+        var invToUpdate = _inventories.FirstOrDefault(x => x.InventoryID == inventory.InventoryID);
+        if (invToUpdate is not null)
+        {
+            invToUpdate.InventoryName = inventory.InventoryName;
+            invToUpdate.Quantity = inventory.Quantity;
+            invToUpdate.Price = inventory.Price;
+        }
+
+        return Task.CompletedTask;
     }
 }
