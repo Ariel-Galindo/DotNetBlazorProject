@@ -1,15 +1,15 @@
-﻿@if (inventory is not null)
+﻿@if (Inventory is not null)
 {
     <tr class="text-center align-middle">
-        <td>@inventory.InventoryName</td>
-        <td>@inventory.Quantity</td>
-        <td>@inventory.Price.ToString("c")</td>
-        <td><button type="button" class="btn btn-light">Edit</button></td>
+        <td>@Inventory.InventoryName</td>
+        <td>@Inventory.Quantity</td>
+        <td>@Inventory.Price.ToString("c")</td>
+        <td><a href="/edit-inventory/@Inventory.InventoryID" class="btn btn-light">Edit</a></td>
     </tr>
 }
 
 @code {
     
     [Parameter]
-    public Inventory? inventory { get; set; }
+    public Inventory? Inventory { get; set; }
 }
