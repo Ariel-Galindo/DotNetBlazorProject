@@ -35,9 +35,9 @@ public class InventoryRepository : IInventoryRepository
         return _inventories.Where(x => x.InventoryName.Contains(name, StringComparison.CurrentCultureIgnoreCase));
     }
 
-    public Task<Inventory> GetInventoryByIdAsync(int inventoryID)
+    public async Task<Inventory?> GetInventoryByIdAsync(int inventoryID)
     {
-        throw new NotImplementedException();
+        return await Task.FromResult(_inventories.FirstOrDefault(x => x.InventoryID == inventoryID));
     }
 
     public Task UpdateInventoryAsync(Inventory inventory)

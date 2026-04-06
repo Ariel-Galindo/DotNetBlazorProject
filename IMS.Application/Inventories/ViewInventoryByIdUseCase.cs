@@ -8,7 +8,7 @@ public class ViewInventoryByIdUseCase(IInventoryRepository inventoryRepository) 
 {
     private readonly IInventoryRepository inventoryRepository = inventoryRepository;
 
-    public async Task<Inventory> ExecuteAsync(int inventoryID)
+    public async Task<Inventory?> ExecuteAsync(int inventoryID)
     {
         return await inventoryRepository.GetInventoryByIdAsync(inventoryID);
     }
