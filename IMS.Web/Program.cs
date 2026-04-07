@@ -2,19 +2,25 @@ using IMS.Application.Inventories.Interfaces;
 using IMS.Application.Inventories;
 using IMS.InMemory;
 using IMS.Web.Components;
+using IMS.Application.Products.Interfaces;
+using IMS.Application.Products;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents();
 
-// DIs
+// Inventory DIs
 builder.Services.AddSingleton<IInventoryRepository, InventoryRepository>();
 builder.Services.AddTransient<IViewInventoriesByNameUseCase, ViewInventoriesByNameUseCase>();
 builder.Services.AddTransient<IAddInventoryUseCase, AddInventoryUseCase>();
 builder.Services.AddTransient<IEditInventoryUseCase, EditInventoryUseCase>();
 builder.Services.AddTransient<IViewInventoryByIdUseCase, ViewInventoryByIdUseCase>();
 builder.Services.AddTransient<IDeleteInventoryUseCase, DeleteInventoryUseCase>();
+
+// Product DIs
+builder.Services.AddSingleton<IProductRepository, ProductRepository>();
+builder.Services.AddTransient<IViewProductsByNameUseCase, ViewProductsByNameUseCase>();
 
 var app = builder.Build();
 
