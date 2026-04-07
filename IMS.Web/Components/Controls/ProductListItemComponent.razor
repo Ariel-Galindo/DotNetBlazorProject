@@ -1,4 +1,4 @@
-﻿@* @inject IDeleteProductUseCase DeleteProductUseCase *@
+﻿@inject IDeleteProductUseCase DeleteProductUseCase
 @inject NavigationManager NavigationManager
 
 @if (Product is not null)
@@ -8,11 +8,12 @@
         <td>@Product.Quantity</td>
         <td>@Product.Price.ToString("c")</td>
         <td class="d-flex justify-content-center">
-            <a href="/edit-Product/@Product.ProductID" class="btn btn-light" style="width: 5em;">Edit</a>
-            @* <EditForm Enhance="true" Model="Product" FormName="@($"form-delete-Product-{Product.ProductID}")"
-                      OnValidSubmit="() => DeleteProduct(Product.ProductID)">
-                <button type="submit" class="btn btn-secondary mx-2" style="width: 5em;">Delete</button>
-            </EditForm> *@
+           <a href="/edit-Product/@Product.ProductID" class="btn btn-light" style="width: 5em;">Edit</a>
+           <button 
+            type="button" 
+            class="btn btn-secondary mx-2" 
+            style="width: 5em;"
+            @onclick="async () => { await HandleDelete(Product.ProductID); }">Delete</button>
         </td>
     </tr>
 }
@@ -21,9 +22,10 @@
 
     [Parameter]
     public Product? Product { get; set; }
-    @* private async Task DeleteProduct(int ProductID)
+
+    private async Task HandleDelete(int productID)
     {
-        await DeleteProductUseCase.ExecuteAsync(ProductID);
+        await DeleteProductUseCase.ExecuteAsync(productID);
         NavigationManager.Refresh();
-    } *@
+    }
 }
