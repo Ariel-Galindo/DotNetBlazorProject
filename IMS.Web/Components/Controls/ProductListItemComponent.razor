@@ -1,0 +1,29 @@
+﻿@* @inject IDeleteProductUseCase DeleteProductUseCase *@
+@inject NavigationManager NavigationManager
+
+@if (Product is not null)
+{
+    <tr class="text-center align-middle">
+        <td>@Product.ProductName</td>
+        <td>@Product.Quantity</td>
+        <td>@Product.Price.ToString("c")</td>
+        <td class="d-flex justify-content-center">
+            <a href="/edit-Product/@Product.ProductID" class="btn btn-light" style="width: 5em;">Edit</a>
+            @* <EditForm Enhance="true" Model="Product" FormName="@($"form-delete-Product-{Product.ProductID}")"
+                      OnValidSubmit="() => DeleteProduct(Product.ProductID)">
+                <button type="submit" class="btn btn-secondary mx-2" style="width: 5em;">Delete</button>
+            </EditForm> *@
+        </td>
+    </tr>
+}
+
+@code {
+
+    [Parameter]
+    public Product? Product { get; set; }
+    @* private async Task DeleteProduct(int ProductID)
+    {
+        await DeleteProductUseCase.ExecuteAsync(ProductID);
+        NavigationManager.Refresh();
+    } *@
+}
