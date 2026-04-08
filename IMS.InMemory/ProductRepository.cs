@@ -15,21 +15,21 @@ public class ProductRepository : IProductRepository
         ];
     }
 
-    public Task AddProductAsync(Product Product)
+    public Task AddProductAsync(Product product)
     {
-        if (_products.Any(x => x.ProductName.Equals(Product.ProductName, StringComparison.OrdinalIgnoreCase))) return Task.CompletedTask;
+        if (_products.Any(x => x.ProductName.Equals(product.ProductName, StringComparison.OrdinalIgnoreCase))) return Task.CompletedTask;
 
         var maxId = _products.Max(x => x.ProductID);
-        Product.ProductID = maxId + 1;
+        product.ProductID = maxId + 1;
 
-        _products.Add(Product);
+        _products.Add(product);
 
         return Task.CompletedTask;
     }
 
-    public Task DeleteProductByIdAsync(int ProductID)
+    public Task DeleteProductByIdAsync(int productID)
     {
-        var Product = _products.FirstOrDefault(x => x.ProductID == ProductID);
+        var Product = _products.FirstOrDefault(x => x.ProductID == productID);
         if (Product is not null)
         {
             _products.Remove(Product);
@@ -45,9 +45,9 @@ public class ProductRepository : IProductRepository
         return _products.Where(x => x.ProductName.Contains(name, StringComparison.CurrentCultureIgnoreCase));
     }
 
-    public async Task<Product?> GetProductByIdAsync(int ProductID)
+    public async Task<Product?> GetProductByIdAsync(int productID)
     {
-        var product = _products.FirstOrDefault(x => x.ProductID == ProductID);
+        var product = _products.FirstOrDefault(x => x.ProductID == productID);
         var newProduct = new Product();
 
         if (product != null)
@@ -85,18 +85,19 @@ public class ProductRepository : IProductRepository
         return await Task.FromResult(newProduct);
     }
 
-    public Task UpdateProductAsync(Product Product)
+    public Task UpdateProductAsync(Product product)
     {
-        if (_products.Any(x => x.ProductID != Product.ProductID &&
-        x.ProductName.Equals(Product.ProductName, StringComparison.OrdinalIgnoreCase)))
+        if (_products.Any(x => x.ProductID != product.ProductID &&
+        x.ProductName.Equals(product.ProductName, StringComparison.OrdinalIgnoreCase)))
             return Task.CompletedTask;
 
-        var invToUpdate = _products.FirstOrDefault(x => x.ProductID == Product.ProductID);
-        if (invToUpdate is not null)
+        var proToUpdate = _products.FirstOrDefault(x => x.ProductID == product.ProductID);
+        if (proToUpdate != null)
         {
-            invToUpdate.ProductName = Product.ProductName;
-            invToUpdate.Quantity = Product.Quantity;
-            invToUpdate.Price = Product.Price;
+            proToUpdate.ProductName = product.ProductName;
+            proToUpdate.Quantity = product.Quantity;
+            proToUpdate.Price = product.Price;
+            proToUpdate.ProductInventories = product.ProductInventories;
         }
 
         return Task.CompletedTask;

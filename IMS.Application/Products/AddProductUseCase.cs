@@ -1,7 +1,7 @@
 using IMS.Application.Products.Interfaces;
 using IMS.Domain;
 
-namespace IMS.Application.Inventories;
+namespace IMS.Application.Products;
 
 public class AddProductUseCase(IProductRepository productRepository) : IAddProductUseCase
 {

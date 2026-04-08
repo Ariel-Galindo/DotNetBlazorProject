@@ -1,6 +1,6 @@
 using IMS.Application.Products.Interfaces;
 
-namespace IMS.Application.Inventories;
+namespace IMS.Application.Products;
 
 public class DeleteProductUseCase(IProductRepository ProductRepository) : IDeleteProductUseCase
 {
