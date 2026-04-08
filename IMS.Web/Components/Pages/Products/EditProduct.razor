@@ -1,0 +1,64 @@
+﻿@page "/edit-product/{id:int}"
+
+@rendermode InteractiveServer
+
+@inject NavigationManager NavigationManager
+@inject IEditProductUseCase EditProductUseCase
+@inject IViewProductByIdUseCase ViewProductByIdUseCase
+
+@if (this.product is not null)
+{
+
+    <EditForm Model="product" OnValidSubmit="Update">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="form-group mb-3">
+            <label for="">Name</label>
+            <InputText id="name" @bind-Value="product!.ProductName" class="form-control" />
+            <ValidationMessage For="() => product.ProductName" />
+        </div>
+        <div class="form-group mb-3">
+            <label for="">Quantity</label>
+            <InputNumber id="quantity" @bind-Value="product.Quantity" class="form-control" />
+            <ValidationMessage For="() => product.Quantity" />
+        </div>
+        <div class="form-group mb-3">
+            <label for="">Price</label>
+            <InputNumber id="price" @bind-Value="product.Price" class="form-control" />
+            <ValidationMessage For="() => product.Price" />
+        </div>
+        <div class="form-group">
+            <label>Inventories</label>
+            <ProductInventoriesComponent Product="this.product" />
+        </div>
+        <a href="/products" class="btn btn-light">Cancel</a>
+        <button type="submit" class="btn btn-secondary">Update</button>
+    </EditForm>
+}
+
+@code {
+
+    private Product? product;
+
+    [Parameter]
+    public int ID { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        this.product = await ViewProductByIdUseCase.ExecuteAsync(this.ID);
+
+        if (this.product is null) 
+        {
+            NavigationManager.NotFound();
+        }
+    }
+    private async Task Update()
+    {
+        if (product is not null)
+        {
+            await EditProductUseCase.ExecuteAsync(this.product);
+            NavigationManager.NavigateTo("/products");
+        }
+    }
+}
