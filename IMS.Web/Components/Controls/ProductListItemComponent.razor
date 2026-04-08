@@ -1,7 +1,7 @@
 ﻿@inject IDeleteProductUseCase DeleteProductUseCase
 @inject NavigationManager NavigationManager
 
-@if (Product is not null)
+@if (this.Product is not null)
 {
     <tr class="text-center align-middle">
         <td>@Product.ProductName</td>

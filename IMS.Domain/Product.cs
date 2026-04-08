@@ -17,21 +17,26 @@ public class Product
     [Range(0, int.MaxValue, ErrorMessage = "Price must be greater or equal to 0.")]
     public double Price { get; set; }
 
-    public List<ProductInventory> ProductInventories { get; set; } = new();
+    public List<ProductInventory> ProductInventories { get; set; } = new List<ProductInventory>();
 
     public void AddInventory(Inventory inventory)
     {
-        if (this.ProductInventories.Any(x => x.Inventory is not null &&
+        if (!this.ProductInventories.Any(x => x.Inventory is not null &&
         x.Inventory.InventoryName.Equals(inventory.InventoryName, StringComparison.OrdinalIgnoreCase)))
         {
             this.ProductInventories.Add(new ProductInventory
             {
                 InventoryID = inventory.InventoryID,
                 Inventory = inventory,
-                InventoryQuantity = inventory.Quantity,
+                InventoryQuantity = 1,
                 ProductID = this.ProductID,
                 Product = this
             });
         }
+    }
+
+    public void RemoveInventory(ProductInventory productInventory)
+    {
+        this.ProductInventories?.Remove(productInventory);
     }
 }

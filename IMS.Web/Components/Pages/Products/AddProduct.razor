@@ -27,8 +27,8 @@
         <ValidationMessage For="() => product.Price" />
     </div>
     <div class="form-group">
-        <label for="price">Inventories</label>
-        <SearchProductInventoriesComponent />
+        <label>Inventories</label>
+        <ProductInventoriesComponent Product="this.product" />
     </div>
     <a href="/products" class="btn btn-light">Cancel</a>
     <button type="submit" class="btn btn-secondary">Submit</button>
