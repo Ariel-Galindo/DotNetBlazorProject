@@ -48,15 +48,19 @@ public class ProductRepository : IProductRepository
     public async Task<Product?> GetProductByIdAsync(int productID)
     {
         var product = _products.FirstOrDefault(x => x.ProductID == productID);
-        var newProduct = new Product();
+        Product? newProduct = null;
 
         if (product != null)
         {
-            newProduct.ProductID = product.ProductID;
-            newProduct.ProductName = product.ProductName;
-            newProduct.Price = product.Price;
-            newProduct.Quantity = product.Quantity;
-            newProduct.ProductInventories = new List<ProductInventory>();
+            newProduct = new Product
+            {
+                ProductID = product.ProductID,
+                ProductName = product.ProductName,
+                Price = product.Price,
+                Quantity = product.Quantity,
+                ProductInventories = new List<ProductInventory>()
+            };
+            
             if (product.ProductInventories != null && product.ProductInventories.Count > 0)
             {
                 foreach (var prodInv in product.ProductInventories)
