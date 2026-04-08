@@ -47,7 +47,42 @@ public class ProductRepository : IProductRepository
 
     public async Task<Product?> GetProductByIdAsync(int ProductID)
     {
-        return await Task.FromResult(_products.FirstOrDefault(x => x.ProductID == ProductID));
+        var product = _products.FirstOrDefault(x => x.ProductID == ProductID);
+        var newProduct = new Product();
+
+        if (product != null)
+        {
+            newProduct.ProductID = product.ProductID;
+            newProduct.ProductName = product.ProductName;
+            newProduct.Price = product.Price;
+            newProduct.Quantity = product.Quantity;
+            newProduct.ProductInventories = new List<ProductInventory>();
+            if (product.ProductInventories != null && product.ProductInventories.Count > 0)
+            {
+                foreach (var prodInv in product.ProductInventories)
+                {
+                    var newProdInv = new ProductInventory
+                    {
+                        InventoryID = prodInv.InventoryID,
+                        ProductID = prodInv.ProductID,
+                        Product = product,
+                        Inventory = new Inventory(),
+                        InventoryQuantity = prodInv.InventoryQuantity
+                    };
+                    if (prodInv.Inventory != null)
+                    {
+                        newProdInv.Inventory.InventoryID = prodInv.Inventory.InventoryID;
+                        newProdInv.Inventory.InventoryName = prodInv.Inventory.InventoryName;
+                        newProdInv.Inventory.Price = prodInv.Inventory.Price;
+                        newProdInv.Inventory.Quantity = prodInv.Inventory.Quantity;
+                    }
+
+                    newProduct.ProductInventories.Add(newProdInv);
+                }
+            }
+        }
+
+        return await Task.FromResult(newProduct);
     }
 
     public Task UpdateProductAsync(Product Product)
