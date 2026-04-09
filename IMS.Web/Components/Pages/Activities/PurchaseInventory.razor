@@ -8,9 +8,12 @@
 <h3>PurchaseInventory</h3>
 <br>
 
-<AutoCompleteComponent Label="Inventory" SearchFunction="SearchInventory" />
+<AutoCompleteComponent Label="Inventory" SearchFunction="SearchInventory" OnItemSelected="HandleItemSelected" />
+@selectedItem?.Name
 
 @code {
+
+    private ItemViewModel? selectedItem;
     private List<ItemViewModel>? SearchInventory(string name)
     {
         var list = ViewInventoriesByNameUseCase.ExecuteAsync(name).GetAwaiter().GetResult();
@@ -19,4 +22,8 @@
         return list.Select(x => new ItemViewModel { ID = x.InventoryID, Name = x.InventoryName })?.ToList();
     }
 
+    private void HandleItemSelected(ItemViewModel item) 
+    {
+        this.selectedItem = item;
+    }
 }
