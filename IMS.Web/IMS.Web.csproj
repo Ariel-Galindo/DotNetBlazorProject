@@ -17,6 +17,7 @@
     <Folder Include="Components\Controls\Common\" />
     <Folder Include="Components\Pages\Activities\" />
     <Folder Include="Components\Pages\Inventories\" />
+    <Folder Include="ViewModels\" />
   </ItemGroup>
 
 </Project>
