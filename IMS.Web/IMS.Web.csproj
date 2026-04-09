@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <Folder Include="Components\Controls\" />
+    <Folder Include="Components\Controls\Common\" />
     <Folder Include="Components\Pages\Inventories\" />
   </ItemGroup>
 
