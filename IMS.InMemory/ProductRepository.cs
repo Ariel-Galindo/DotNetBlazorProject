@@ -1,3 +1,5 @@
+using System.Numerics;
+using IMS.Application.Inventories.Interfaces;
 using IMS.Application.Products.Interfaces;
 using IMS.Domain;
 
@@ -6,13 +8,15 @@ namespace IMS.InMemory;
 public class ProductRepository : IProductRepository
 {
     private readonly List<Product> _products;
+    private readonly IInventoryRepository inventoryRepository;
 
-    public ProductRepository()
+    public ProductRepository(IInventoryRepository inventoryRepository)
     {
         _products = [
             new Product { ProductID = 1, ProductName = "Bike", Quantity = 10, Price = 200 },
             new Product { ProductID = 2, ProductName = "Car", Quantity = 20, Price = 400 },
         ];
+        this.inventoryRepository = inventoryRepository;
     }
 
     public Task AddProductAsync(Product product)
@@ -60,7 +64,7 @@ public class ProductRepository : IProductRepository
                 Quantity = product.Quantity,
                 ProductInventories = new List<ProductInventory>()
             };
-            
+
             if (product.ProductInventories != null && product.ProductInventories.Count > 0)
             {
                 foreach (var prodInv in product.ProductInventories)
@@ -75,10 +79,16 @@ public class ProductRepository : IProductRepository
                     };
                     if (prodInv.Inventory != null)
                     {
-                        newProdInv.Inventory.InventoryID = prodInv.Inventory.InventoryID;
-                        newProdInv.Inventory.InventoryName = prodInv.Inventory.InventoryName;
-                        newProdInv.Inventory.Price = prodInv.Inventory.Price;
-                        newProdInv.Inventory.Quantity = prodInv.Inventory.Quantity;
+                        var inv = await inventoryRepository.GetInventoryByIdAsync(prodInv.Inventory.InventoryID);
+
+                        if (inv is not null)
+                        {
+
+                            newProdInv.Inventory.InventoryID = inv.InventoryID;
+                            newProdInv.Inventory.InventoryName = inv.InventoryName;
+                            newProdInv.Inventory.Price = inv.Price;
+                            newProdInv.Inventory.Quantity = inv.Quantity;
+                        }
                     }
 
                     newProduct.ProductInventories.Add(newProdInv);
