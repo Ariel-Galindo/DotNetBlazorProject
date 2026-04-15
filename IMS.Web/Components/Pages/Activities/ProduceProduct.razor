@@ -40,9 +40,10 @@
 
     private async Task HandleItemSelected(ItemViewModel item)
     {
-        selectedProduct = (await ViewProductByIdUseCase.ExecuteAsync(item.ID));
+        this.selectedProduct = (await ViewProductByIdUseCase.ExecuteAsync(item.ID));
 
-        this.produceViewModel.ProductID = item.ID;
+        produceViewModel.ProductID = item.ID;
+        produceViewModel.Product = this.selectedProduct;
     }
 
     private async Task Produce()
