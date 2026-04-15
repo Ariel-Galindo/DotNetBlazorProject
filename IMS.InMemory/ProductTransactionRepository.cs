@@ -1,0 +1,52 @@
+using System;
+using IMS.Application.Activities.Interfaces;
+using IMS.Application.Products.Interfaces;
+using IMS.Domain.Enums;
+using IMS.Domain;
+using IMS.Application.Inventories.Interfaces;
+
+namespace IMS.InMemory;
+
+public class ProductTransactionRepository(IProductRepository productRepository, IInventoryTransactionRepository iventoryTransactionRepository, IInventoryRepository inventoryRepository) : IProductTransactionRepository
+{
+    private List<ProductTransaction> _productTransaction = new ();
+    private readonly IProductRepository productRepository = productRepository;
+    private readonly IInventoryTransactionRepository iventoryTransactionRepository = iventoryTransactionRepository;
+    private readonly IInventoryRepository inventoryRepository = inventoryRepository;
+
+    public async Task ProduceAsync(string productionNumber, Product product, int quantityToConsume, string doneBy)
+    {
+        var prod = await this.productRepository.GetProductByIdAsync(product.ProductID);
+
+        if (prod != null)
+        {
+            foreach (var item in prod.ProductInventories)
+            {
+                if (item.Inventory != null)
+                {
+                    this.iventoryTransactionRepository.ProduceAsync(
+                        productionNumber, 
+                        item.Inventory, 
+                        item.Inventory!.Quantity * quantityToConsume, 
+                        doneBy,
+                         -1);
+
+                    var inv = await this.inventoryRepository.GetInventoryByIdAsync(item.InventoryID);
+                    inv!.Quantity -= item.InventoryQuantity * quantityToConsume;
+                    await this.inventoryRepository.UpdateInventoryAsync(inv);
+                }
+            }
+        }
+
+        this._productTransaction.Add(new ProductTransaction
+        {
+            ProductionNumber = productionNumber,
+            ProductID = product.ProductID,
+            QuantityBefore = product.Quantity,
+            QuantityAfter = product.Quantity + quantityToConsume,
+            ProductTransactionType = ProductTransactionType.ProduceProduct,
+            TransactionDate = DateTime.Now,
+            DoneBy = doneBy
+        });
+    }
+}
