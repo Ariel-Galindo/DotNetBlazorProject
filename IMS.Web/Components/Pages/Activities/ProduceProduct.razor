@@ -1,0 +1,63 @@
+﻿@page "/produce"
+
+@rendermode InteractiveServer
+
+@inject IViewProductByIdUseCase ViewProductByIdUseCase
+@inject IViewProductsByNameUseCase ViewProductsByNameUseCase
+@inject IProduceProductUseCase ProduceProductUseCase
+<h3>Produce Product</h3>
+
+<EditForm Model="produceViewModel" OnValidSubmit="Produce">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label for="prodNumber">Production Number</label>
+        <InputText type="text" id="prodNumber" @bind-value="produceViewModel.ProductionNumber" class="form-control"></InputText>
+    </div>
+    <div class="form-group">
+        <AutoCompleteComponent Label="Product" SearchFunction="SearchProduct" OnItemSelected="HandleItemSelected" />
+    </div>
+    <div class="form-group">
+        <label for="qty">Quantity</label>
+        <InputNumber type="text" id="qty" @bind-value="produceViewModel.QuantityToProduce" class="form-control">
+        </InputNumber>
+    </div>
+    <button type="submit" class="btn btn-secondary">Submit</button>
+</EditForm>
+
+@code {
+    private ProduceViewModel produceViewModel = new ProduceViewModel();
+    private Product? selectedProduct;
+
+    private List<ItemViewModel>? SearchProduct(string name)
+    {
+        var list = ViewProductsByNameUseCase.ExecuteAsync(name).GetAwaiter().GetResult();
+        if (list is null) return null;
+
+        return list.Select(x => new ItemViewModel { ID = x.ProductID, Name = x.ProductName })?.ToList();
+    }
+
+    private async Task HandleItemSelected(ItemViewModel item)
+    {
+        selectedProduct = (await ViewProductByIdUseCase.ExecuteAsync(item.ID));
+
+        this.produceViewModel.ProductID = item.ID;
+    }
+
+    private async Task Produce()
+    {
+        if (selectedProduct is not null)
+        {
+            await ProduceProductUseCase.ExecuteAsync(
+                this.produceViewModel.ProductionNumber,
+                selectedProduct!,
+                this.produceViewModel.QuantityToProduce,
+                "Ariel");
+
+            this.produceViewModel = new ProduceViewModel();
+            this.selectedProduct = null;
+        }
+            
+    }
+}
