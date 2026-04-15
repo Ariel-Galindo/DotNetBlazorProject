@@ -2,12 +2,13 @@
 
 @rendermode InteractiveServer
 
+@inject IJSRuntime JSRuntime
 @inject IViewProductByIdUseCase ViewProductByIdUseCase
 @inject IViewProductsByNameUseCase ViewProductsByNameUseCase
 @inject IProduceProductUseCase ProduceProductUseCase
 <h3>Produce Product</h3>
 
-<EditForm Model="produceViewModel" OnValidSubmit="Produce">
+<EditForm id="produce-form" Model="produceViewModel" OnValidSubmit="Produce">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
@@ -44,6 +45,16 @@
 
         produceViewModel.ProductID = item.ID;
         produceViewModel.Product = this.selectedProduct;
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+
+        if (firstRender) 
+        {
+            JSRuntime.InvokeVoidAsync("preventFormSubmission", "produce-form");
+        }
     }
 
     private async Task Produce()
