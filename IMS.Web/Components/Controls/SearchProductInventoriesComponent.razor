@@ -33,7 +33,7 @@
         set
         {
             _searchFilter = value;
-            HandleSearch();
+            HandleSearch().GetAwaiter().GetResult();
         }
     }
 
