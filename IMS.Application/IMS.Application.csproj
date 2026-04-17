@@ -11,4 +11,9 @@
     <ProjectReference Include="..\IMS.Persistence\IMS.Persistence.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Reports\" />
+    <Folder Include="Reports\Interfaces\" />
+  </ItemGroup>
+
 </Project>

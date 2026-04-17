@@ -6,6 +6,8 @@ using IMS.Application.Products.Interfaces;
 using IMS.Application.Products;
 using IMS.Application.Activities.Interfaces;
 using IMS.Application.Activities;
+using IMS.Application.Reports.Interfaces;
+using IMS.Application.Reports;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +22,7 @@ builder.Services.AddTransient<IAddInventoryUseCase, AddInventoryUseCase>();
 builder.Services.AddTransient<IEditInventoryUseCase, EditInventoryUseCase>();
 builder.Services.AddTransient<IViewInventoryByIdUseCase, ViewInventoryByIdUseCase>();
 builder.Services.AddTransient<IDeleteInventoryUseCase, DeleteInventoryUseCase>();
+builder.Services.AddTransient<ISearchInventoryTransactionUseCase, SearchInventoryTransactionUseCase>();
 
 // Product DIs
 builder.Services.AddSingleton<IProductRepository, ProductRepository>();
