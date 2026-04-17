@@ -10,9 +10,9 @@ public class SellProductUseCase(IProductTransactionRepository productTransaction
     private readonly IProductTransactionRepository productTransactionRepository = productTransactionRepository;
     private readonly IProductRepository productRepository = productRepository;
 
-    public async Task ExecuteAsync(string salesOrderNumber, Product product, int quantity, string doneBy)
+    public async Task ExecuteAsync(string salesOrderNumber, Product product, int quantity, double unitPrice, string doneBy)
     {
-        await this.productTransactionRepository.SellProductAsync(salesOrderNumber, product, quantity, doneBy);
+        await this.productTransactionRepository.SellProductAsync(salesOrderNumber, product, quantity, unitPrice, doneBy);
 
         product.Quantity -= quantity;
         await this.productRepository.UpdateProductAsync(product);
