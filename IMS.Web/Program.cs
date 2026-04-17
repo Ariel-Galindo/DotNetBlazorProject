@@ -29,6 +29,7 @@ builder.Services.AddTransient<IEditProductUseCase, EditProductUseCase>();
 builder.Services.AddTransient<IViewProductByIdUseCase, ViewProductByIdUseCase>();
 builder.Services.AddTransient<IDeleteProductUseCase, DeleteProductUseCase>();
 builder.Services.AddTransient<IProduceProductUseCase, ProduceProductUseCase>();
+builder.Services.AddTransient<ISellProductUseCase, SellProductUseCase>();
 
 // Activity DIs
 builder.Services.AddSingleton<IInventoryTransactionRepository, InventoryTransactionRepository>();

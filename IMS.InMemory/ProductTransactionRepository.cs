@@ -9,7 +9,7 @@ namespace IMS.InMemory;
 
 public class ProductTransactionRepository(IProductRepository productRepository, IInventoryTransactionRepository iventoryTransactionRepository, IInventoryRepository inventoryRepository) : IProductTransactionRepository
 {
-    private List<ProductTransaction> _productTransaction = new ();
+    private List<ProductTransaction> _productTransaction = new();
     private readonly IProductRepository productRepository = productRepository;
     private readonly IInventoryTransactionRepository iventoryTransactionRepository = iventoryTransactionRepository;
     private readonly IInventoryRepository inventoryRepository = inventoryRepository;
@@ -25,9 +25,9 @@ public class ProductTransactionRepository(IProductRepository productRepository, 
                 if (item.Inventory != null)
                 {
                     this.iventoryTransactionRepository.ProduceAsync(
-                        productionNumber, 
-                        item.Inventory, 
-                        item.Inventory!.Quantity * quantityToConsume, 
+                        productionNumber,
+                        item.Inventory,
+                        item.Inventory!.Quantity * quantityToConsume,
                         doneBy,
                          -1);
 
@@ -48,5 +48,21 @@ public class ProductTransactionRepository(IProductRepository productRepository, 
             TransactionDate = DateTime.Now,
             DoneBy = doneBy
         });
+    }
+
+    public Task SellProductAsync(string salesOrderNumber, Product product, int quantity, string doneBy)
+    {
+        this._productTransaction.Add(new ProductTransaction
+        {
+            ProductTransactionType = ProductTransactionType.SellProduct,
+            SONumber = salesOrderNumber,
+            ProductID = product.ProductID,
+            QuantityBefore = product.Quantity,
+            QuantityAfter = product.Quantity - quantity,
+            TransactionDate = DateTime.Now,
+            UnitPrice = product.Price
+        });
+
+        return Task.CompletedTask;
     }
 }

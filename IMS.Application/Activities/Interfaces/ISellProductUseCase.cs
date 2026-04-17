@@ -1,0 +1,9 @@
+using System;
+using IMS.Domain;
+
+namespace IMS.Application.Activities.Interfaces;
+
+public interface ISellProductUseCase
+{
+    Task ExecuteAsync(string salesOrderNumber, Product product, int quantity, string doneBy);
+}
