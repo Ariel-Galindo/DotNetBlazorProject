@@ -32,6 +32,7 @@ public class InventoryTransactionRepository(IInventoryRepository inventoryReposi
                 InventoryID = it.InventoryID,
                 QuantityBefore = it.QuantityBefore,
                 QuantityAfter = it.QuantityAfter,
+                InventoryTransactionType = it.InventoryTransactionType,
                 TransactionDate = it.TransactionDate,
                 DoneBy = it.DoneBy,
                 UnitPrice = it.UnitPrice
