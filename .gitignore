@@ -481,3 +481,5 @@ $RECYCLE.BIN/
 # Vim temporary swap files
 *.swp
 IMS.Web/IMSDatabase.db
+IMS.Web/IMSDatabase.db-shm
+IMS.Web/IMSDatabase.db-wal
