@@ -24,7 +24,7 @@ public class ProductTransactionRepository(IProductRepository productRepository, 
             {
                 if (item.Inventory != null)
                 {
-                    this.iventoryTransactionRepository.ProduceAsync(
+                    await this.iventoryTransactionRepository.ProduceAsync(
                         productionNumber,
                         item.Inventory,
                         item.Inventory!.Quantity * quantityToConsume,

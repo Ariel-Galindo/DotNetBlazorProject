@@ -41,7 +41,7 @@ public class InventoryTransactionRepository(IInventoryRepository inventoryReposi
             return query;
     }
 
-    public void ProduceAsync(string productionNumber, Inventory inventory, int quantityToConsume, string doneBy, double price)
+    public async Task ProduceAsync(string productionNumber, Inventory inventory, int quantityToConsume, string doneBy, double price)
     {
         this._inventoryTransaction.Add(new InventoryTransaction
         {
@@ -56,7 +56,7 @@ public class InventoryTransactionRepository(IInventoryRepository inventoryReposi
         });
     }
 
-    public void PurchaseAsync(string poNumber, Inventory inventory, int quantity, string doneBy, double price)
+    public async Task PurchaseAsync(string poNumber, Inventory inventory, int quantity, string doneBy, double price)
     {
         this._inventoryTransaction.Add(new InventoryTransaction
         {

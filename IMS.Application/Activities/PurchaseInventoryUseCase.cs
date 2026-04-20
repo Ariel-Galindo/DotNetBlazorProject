@@ -12,7 +12,7 @@ public class PurchaseInventoryUseCase(IInventoryTransactionRepository inventoryT
 
     public async Task ExecuteAsync(string poNumber, Inventory inventory, int quantity, string doneBy, double price)
     {
-        inventoryTransactionRepository.PurchaseAsync(poNumber, inventory, quantity, doneBy, price);
+        await inventoryTransactionRepository.PurchaseAsync(poNumber, inventory, quantity, doneBy, price);
 
         inventory.Quantity += quantity;
         await this.inventoryRepository.UpdateInventoryAsync(inventory);
