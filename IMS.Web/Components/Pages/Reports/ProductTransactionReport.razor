@@ -1,16 +1,14 @@
-﻿@page "/inventoryreport"
-@using IMS.Domain.Enums
-@using System.ComponentModel.DataAnnotations.Schema
+﻿@page "/productreport"
 
 @rendermode InteractiveServer
 
-@inject ISearchInventoryTransactionUseCase SearchInventoryTransactionUseCase
-<h3>Inventory Transactions</h3>
+@inject ISearchProductTransactionUseCase SearchProductTransactionUseCase
+<h3>Product Transactions</h3>
 
 <div class="row">
     <div class="col">
-        <label for="inv">Inventory Name</label>
-        <input type="text" id="inv" class="form-control" @bind-value="invName" />
+        <label for="prod">Product Name</label>
+        <input type="text" id="prod" class="form-control" @bind-value="prodName" />
     </div>
     <div class="col">
         <label for="df">Date From</label>
@@ -24,45 +22,47 @@
         <label for="dt">Activity Type</label>
         <select id="at" class="form-control" @bind="activityTypeID">
             <option value="0"></option>
-            <option value="1">Purchase Inventory</option>
-            <option value="2">Produce Product</option>
+            <option value="1">Produce Product</option>
+            <option value="2">Sell Product</option>
         </select>
     </div>
     <div class="col">
         <label>&nbsp;</label>
-        <button type="button" class="btn btn-primary form-control" @onclick="SearchInventories">Search</button>
+        <button type="button" class="btn btn-primary form-control" @onclick="SearchProducts">Search</button>
     </div>
 </div>
 
-@if (inventoryTransactions != null && inventoryTransactions.Count() > 0) 
+@if (productTransactions != null && productTransactions.Count() > 0) 
 {
     <table class="table">
 <thead>
     <th>Date</th>
-    <th>Inventory</th>
+    <th>Product</th>
     <th>Activity</th>
     <th>Qty Before</th>
     <th>Qty After</th>
+    <th>Unit Price</th>
     <th>PO #</th>
     <th>Production #</th>
 </thead>
 <tbody>
-    @foreach (var it in inventoryTransactions) 
+    @foreach (var it in productTransactions) 
     {
         <tr>
             <td>@it.TransactionDate.ToString("MM/dd/yyyy")</td>
-            <td>@it.Inventory!.InventoryName</td>
+            <td>@it.Product!.ProductName</td>
             <td>
-                @if (it.InventoryTransactionType == InventoryTransactionType.PurchaseInventory) 
+                @if (it.ProductTransactionType == ProductTransactionType.ProduceProduct) 
                 {
-                    <text>Purchase</text>
-                } else if (it.InventoryTransactionType == InventoryTransactionType.ProduceProduct){
                     <text>Produce</text>
+                } else if (it.ProductTransactionType == ProductTransactionType.SellProduct){
+                    <text>Sell</text>
                 }
             </td>
             <td>@it.QuantityBefore</td>
             <td>@it.QuantityAfter</td>
-            <td>@it.PONumber</td>
+            <td>@it.UnitPrice?.ToString("c")</td>
+            <td>@it.SONumber</td>
             <td>@it.ProductionNumber</td>
         </tr>
     }
@@ -71,18 +71,18 @@
 }
 
 @code {
-    private string invName = string.Empty;
+    private string prodName = string.Empty;
     private DateTime? dateFrom;
     private DateTime? dateTo;
     private int activityTypeID;
-    private IEnumerable<InventoryTransaction>? inventoryTransactions;
+    private IEnumerable<ProductTransaction>? productTransactions;
 
-    private async Task SearchInventories()
+    private async Task SearchProducts()
     {
-        InventoryTransactionType? invType = null;
+        ProductTransactionType? prodType = null;
 
-        if (activityTypeID != 0) invType = (InventoryTransactionType)activityTypeID;
+        if (activityTypeID != 0) prodType = (ProductTransactionType)activityTypeID;
 
-        inventoryTransactions = await SearchInventoryTransactionUseCase.ExecuteAsync(invName, dateFrom, dateTo, invType);
+        productTransactions = await SearchProductTransactionUseCase.ExecuteAsync(prodName, dateFrom, dateTo, prodType);
     }
 }
