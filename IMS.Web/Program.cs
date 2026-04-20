@@ -8,12 +8,20 @@ using IMS.Application.Activities.Interfaces;
 using IMS.Application.Activities;
 using IMS.Application.Reports.Interfaces;
 using IMS.Application.Reports;
+using IMS.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+// Db Context
+builder.Services.AddDbContextFactory<AppDbContext>(options =>
+{
+    options.UseSqlite(builder.Configuration.GetConnectionString("LocalConnection"));
+});
 
 // Inventory DIs
 builder.Services.AddSingleton<IInventoryRepository, InventoryRepository>();

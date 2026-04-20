@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using IMS.Domain.Validations;
 
 namespace IMS.Domain;
 
@@ -15,4 +16,7 @@ public class Inventory
 
     [Range(0, int.MaxValue, ErrorMessage = "Price must be greater or equal to 0.")]
     public double Price { get; set; }
+    
+    [Product_EnsurePriceIsGreaterThanInventoriesCost]
+    public List<ProductInventory> ProductInventories { get; set; } = new List<ProductInventory>();
 }
