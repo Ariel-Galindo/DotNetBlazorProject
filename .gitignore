@@ -483,3 +483,4 @@ $RECYCLE.BIN/
 IMS.Web/IMSDatabase.db
 IMS.Web/IMSDatabase.db-shm
 IMS.Web/IMSDatabase.db-wal
+.vscode/launch.json

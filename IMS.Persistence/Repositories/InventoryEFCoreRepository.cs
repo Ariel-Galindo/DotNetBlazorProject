@@ -30,7 +30,7 @@ public class InventoryEFCoreRepository(IDbContextFactory<AppDbContext> dbContext
     public async Task<IEnumerable<Inventory>> GetInventoriesByNameAsync(string name)
     {
         using var db = dbContext.CreateDbContext();
-        return await db.Inventories?.Where(i => i.InventoryName.ToLower().Contains(name.ToLower(), StringComparison.CurrentCulture)).ToListAsync()!;
+        return await db.Inventories?.Where(i => i.InventoryName.ToLower().Contains(name.ToLower())).ToListAsync()!;
     }
 
     public async Task<Inventory?> GetInventoryByIdAsync(int inventoryID)

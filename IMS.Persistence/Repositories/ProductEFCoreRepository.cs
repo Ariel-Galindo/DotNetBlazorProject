@@ -38,7 +38,7 @@ public class ProductEFCoreRepository(IDbContextFactory<AppDbContext> dbContext) 
     public async Task<IEnumerable<Product>> GetProductsByNameAsync(string name)
     {
         using var db = dbContext.CreateDbContext();
-        return await db.Products?.Where(p => p.ProductName.ToLower().Contains(name.ToLower(), StringComparison.CurrentCulture)).ToListAsync()!;
+        return await db.Products?.Where(p => p.ProductName.ToLower().Contains(name.ToLower())).ToListAsync()!;
     }
 
     public async Task UpdateProductAsync(Product product)
