@@ -8,8 +8,8 @@ using IMS.Application.Activities.Interfaces;
 using IMS.Application.Activities;
 using IMS.Application.Reports.Interfaces;
 using IMS.Application.Reports;
-using IMS.Persistence;
 using Microsoft.EntityFrameworkCore;
+using IMS.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 

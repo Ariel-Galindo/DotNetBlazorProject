@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace IMS.Persistence;
 
-public class DatabaseInitializer
+public static class DatabaseInitializer
 {
     public static async Task MigrateAsync(IServiceProvider serviceProvider)
     {
