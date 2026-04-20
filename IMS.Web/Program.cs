@@ -18,10 +18,7 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 // Db Context
-builder.Services.AddDbContextFactory<AppDbContext>(options =>
-{
-    options.UseSqlite(builder.Configuration.GetConnectionString("LocalConnection"));
-});
+builder.Services.AddPersistence(builder.Configuration.GetConnectionString("LocalConnection")!);
 
 // Inventory DIs
 builder.Services.AddSingleton<IInventoryRepository, InventoryRepository>();
@@ -51,6 +48,9 @@ builder.Services.AddTransient<IPurchaseInventoryUseCase, PurchaseInventoryUseCas
 builder.Services.AddSingleton<IProductTransactionRepository, ProductTransactionRepository>();
 
 var app = builder.Build();
+
+// Database initializer
+await DatabaseInitializer.MigrateAsync(app.Services);
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
