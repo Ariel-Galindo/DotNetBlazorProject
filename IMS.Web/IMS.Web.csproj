@@ -17,7 +17,6 @@
     <Folder Include="Components\Controls\Common\" />
     <Folder Include="Components\Pages\Activities\" />
     <Folder Include="Components\Pages\Inventories\" />
-    <Folder Include="Components\Pages\Reports\" />
     <Folder Include="ViewModels\" />
     <Folder Include="ViewModelValidations\" />
   </ItemGroup>

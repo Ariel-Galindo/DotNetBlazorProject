@@ -65,4 +65,35 @@ public class ProductTransactionRepository(IProductRepository productRepository, 
 
         return Task.CompletedTask;
     }
+
+    public async Task<IEnumerable<ProductTransaction>> GetProductTransactionAsync(string productName, DateTime? dateFrom, DateTime? dateTo, ProductTransactionType? transactionType)
+    {
+        var products = (await this.productRepository.GetProductsByNameAsync(string.Empty)).ToList();
+
+        var query = from it in this._productTransaction
+            join pro in products on it.ProductID equals pro.ProductID
+            where 
+            (
+                string.IsNullOrWhiteSpace(productName) || pro.ProductName.ToLower().IndexOf(productName.ToLower()) >= 0)
+                &&
+                (!dateFrom.HasValue || it.TransactionDate >= dateFrom.Value.Date) &&
+                (!dateTo.HasValue || it.TransactionDate <= dateTo.Value.Date) &&
+                (!transactionType.HasValue || it.ProductTransactionType == transactionType
+            )
+            select new ProductTransaction
+            {
+                Product = pro,
+                ProductTransactionID = it.ProductTransactionID,
+                SONumber = it.SONumber,
+                ProductID = it.ProductID,
+                QuantityBefore = it.QuantityBefore,
+                QuantityAfter = it.QuantityAfter,
+                ProductTransactionType = it.ProductTransactionType,
+                TransactionDate = it.TransactionDate,
+                DoneBy = it.DoneBy,
+                UnitPrice = it.UnitPrice
+            };
+
+            return query;
+    }
 }
