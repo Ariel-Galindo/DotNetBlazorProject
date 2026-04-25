@@ -1,0 +1,75 @@
+﻿@page "/produce"
+
+@rendermode InteractiveServer
+
+@inject IJSRuntime JSRuntime
+@inject IViewProductByIdUseCase ViewProductByIdUseCase
+@inject IViewProductsByNameUseCase ViewProductsByNameUseCase
+@inject IProduceProductUseCase ProduceProductUseCase
+<h3>Produce Product</h3>
+
+<EditForm id="produce-form" Model="produceViewModel" OnValidSubmit="Produce">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label for="prodNumber">Production Number</label>
+        <InputText type="text" id="prodNumber" @bind-value="produceViewModel.ProductionNumber" class="form-control"></InputText>
+    </div>
+    <div class="form-group">
+        <AutoCompleteComponent Label="Product" SearchFunction="SearchProduct" OnItemSelected="HandleItemSelected" />
+    </div>
+    <div class="form-group">
+        <label for="qty">Quantity</label>
+        <InputNumber type="text" id="qty" @bind-value="produceViewModel.QuantityToProduce" class="form-control">
+        </InputNumber>
+    </div>
+    <button type="submit" class="btn btn-secondary">Submit</button>
+</EditForm>
+
+@code {
+    private ProduceViewModel produceViewModel = new ProduceViewModel();
+    private Product? selectedProduct;
+
+    private async Task<List<ItemViewModel>?> SearchProduct(string name)
+    {
+        var list = await ViewProductsByNameUseCase.ExecuteAsync(name);
+        if (list is null) return null;
+
+        return list.Select(x => new ItemViewModel { ID = x.ProductID, Name = x.ProductName })?.ToList();
+    }
+
+    private async Task HandleItemSelected(ItemViewModel item)
+    {
+        this.selectedProduct = (await ViewProductByIdUseCase.ExecuteAsync(item.ID));
+
+        produceViewModel.ProductID = item.ID;
+        produceViewModel.Product = this.selectedProduct;
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+
+        if (firstRender) 
+        {
+            JSRuntime.InvokeVoidAsync("preventFormSubmission", "produce-form");
+        }
+    }
+
+    private async Task Produce()
+    {
+        if (selectedProduct is not null)
+        {
+            await ProduceProductUseCase.ExecuteAsync(
+                this.produceViewModel.ProductionNumber,
+                selectedProduct!,
+                this.produceViewModel.QuantityToProduce,
+                "Ariel");
+
+            this.produceViewModel = new ProduceViewModel();
+            this.selectedProduct = null;
+        }
+            
+    }
+}

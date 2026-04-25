@@ -1,11 +1,11 @@
+using System;
 using System.ComponentModel.DataAnnotations;
-using IMS.Domain.Validations;
 
-namespace IMS.Domain;
+namespace IMS.Web.ViewModels;
 
-public class Inventory
+public class InventoryViewModel
 {
-    public int InventoryID { get; set; }
+public int InventoryID { get; set; }
 
     [Required]
     [StringLength(150)]
@@ -16,7 +16,4 @@ public class Inventory
 
     [Range(0, int.MaxValue, ErrorMessage = "Price must be greater or equal to 0.")]
     public double Price { get; set; }
-    
-    [Product_EnsurePriceIsGreaterThanInventoriesCost]
-    public List<ProductInventory> ProductInventories { get; set; } = new List<ProductInventory>();
 }

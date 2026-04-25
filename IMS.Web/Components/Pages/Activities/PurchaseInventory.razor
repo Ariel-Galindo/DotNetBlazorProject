@@ -4,6 +4,7 @@
 
 @rendermode InteractiveServer
 
+@inject IJSRuntime JSRuntime
 @inject IViewInventoriesByNameUseCase ViewInventoriesByNameUseCase
 @inject IViewInventoryByIdUseCase ViewInventoryByIdUseCase
 @inject IPurchaseInventoryUseCase PurchaseInventoryUseCase
@@ -11,7 +12,7 @@
 <h3>PurchaseInventory</h3>
 <br>
 
-<EditForm Model="purchaseViewModel" OnValidSubmit="Purchase">
+<EditForm id="purchase-form" Model="purchaseViewModel" OnValidSubmit="Purchase">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
@@ -41,9 +42,19 @@
     private PurchaseViewModel purchaseViewModel = new PurchaseViewModel();
     private Inventory? selectedInventory;
 
-    private List<ItemViewModel>? SearchInventory(string name)
+    protected override void OnAfterRender(bool firstRender)
     {
-        var list = ViewInventoriesByNameUseCase.ExecuteAsync(name).GetAwaiter().GetResult();
+        base.OnAfterRender(firstRender);
+
+        if (firstRender) 
+        {
+            JSRuntime.InvokeVoidAsync("preventFormSubmission", "purchase-form");
+        }
+    }
+
+    private async Task<List<ItemViewModel>?> SearchInventory(string name)
+    {
+        var list = await ViewInventoriesByNameUseCase.ExecuteAsync(name);
         if (list is null) return null;
 
         return list.Select(x => new ItemViewModel { ID = x.InventoryID, Name = x.InventoryName })?.ToList();
